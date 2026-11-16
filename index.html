@@ -17,7 +17,7 @@
     :root {
       --bg-gradient: linear-gradient(135deg, #180914 0%, #2a081a 50%, #12030d 100%);
       --accent-color: #ff4d79;
-      --accent-glow: rgba(255, 77, 121, 0.5);
+      --accent-glow: rgba(255, 77, 121, 0.45);
       --glass-bg: rgba(255, 255, 255, 0.08);
       --glass-border: rgba(255, 255, 255, 0.14);
       --text-main: #fff0f5;
@@ -41,31 +41,31 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 24px 20px calc(24px + env(safe-area-inset-bottom)) 20px;
+      padding: 18px 20px calc(20px + env(safe-area-inset-bottom)) 20px;
     }
 
     .header {
       text-align: center;
-      margin-top: 10px;
+      margin-top: 5px;
       width: 100%;
     }
 
     .badge {
       display: inline-block;
-      padding: 6px 16px;
+      padding: 5px 15px;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       border-radius: 30px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--accent-color);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .title {
       font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
+      font-size: 2.1rem;
       font-weight: 600;
       background: linear-gradient(180deg, #ffffff 0%, #ffccd5 100%);
       -webkit-background-clip: text;
@@ -75,63 +75,65 @@
     .subtitle {
       font-size: 0.85rem;
       color: var(--text-muted);
-      margin-top: 4px;
+      margin-top: 2px;
       font-weight: 300;
     }
 
+    /* Tarjeta de Conversación */
     .dialog-card {
       width: 100%;
       max-width: 360px;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       border-radius: var(--card-radius);
-      padding: 24px 20px;
+      padding: 22px 18px;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
       text-align: center;
       position: relative;
     }
 
     .dialog-avatar {
-      width: 60px;
-      height: 60px;
+      width: 58px;
+      height: 58px;
       background: linear-gradient(135deg, #ff4d79, #991b3e);
       border-radius: 50%;
-      margin: -50px auto 12px auto;
+      margin: -48px auto 10px auto;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
+      font-size: 1.7rem;
       box-shadow: 0 8px 20px var(--accent-glow);
       border: 2px solid rgba(255, 255, 255, 0.4);
     }
 
     .dialog-message {
-      font-size: 1.05rem;
-      line-height: 1.5;
+      font-size: 1.02rem;
+      line-height: 1.45;
       color: var(--text-main);
-      min-height: 55px;
+      min-height: 52px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .dialog-transcript {
-      margin-top: 12px;
-      font-size: 0.9rem;
+      margin-top: 10px;
+      font-size: 0.85rem;
       color: #ffccd5;
       font-style: italic;
-      min-height: 20px;
+      min-height: 18px;
     }
 
+    /* Cuadro de resumen del evento */
     .data-preview {
-      margin-top: 16px;
+      margin-top: 14px;
       padding-top: 12px;
       border-top: 1px dashed var(--glass-border);
       display: none;
       text-align: left;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
     }
 
@@ -140,7 +142,7 @@
     }
 
     .data-item {
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       display: flex;
       justify-content: space-between;
     }
@@ -149,19 +151,19 @@
       color: #fff;
     }
 
+    /* Controles de Micrófono */
     .voice-control-area {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 100%;
       max-width: 360px;
-      margin-bottom: 20px;
     }
 
     .mic-button-wrapper {
       position: relative;
-      width: 110px;
-      height: 110px;
+      width: 105px;
+      height: 105px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -179,14 +181,14 @@
     }
 
     .mic-button {
-      width: 85px;
-      height: 85px;
+      width: 82px;
+      height: 82px;
       border-radius: 50%;
       background: linear-gradient(135deg, #ff4d79 0%, #b31245 100%);
       border: none;
       outline: none;
       color: white;
-      font-size: 2.2rem;
+      font-size: 2.1rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -207,39 +209,89 @@
     .is-listening .mic-button {
       background: linear-gradient(135deg, #ff1a53 0%, #ff7597 100%);
       box-shadow: 0 0 35px rgba(255, 26, 83, 0.9);
-      transform: scale(1.06);
+      transform: scale(1.05);
     }
 
     @keyframes pulseAnimation {
       0% { transform: scale(0.9); opacity: 0.9; }
-      100% { transform: scale(1.8); opacity: 0; }
+      100% { transform: scale(1.75); opacity: 0; }
     }
 
     .mic-status-label {
-      margin-top: 14px;
-      font-size: 0.9rem;
+      margin-top: 10px;
+      font-size: 0.85rem;
       color: var(--text-muted);
       text-align: center;
-      font-weight: 400;
+      min-height: 20px;
     }
 
+    /* Botones de Confirmación Rápida */
     .quick-actions {
       display: flex;
       gap: 10px;
-      margin-top: 15px;
+      margin-top: 12px;
       width: 100%;
     }
 
     .btn-action {
       flex: 1;
-      padding: 12px;
-      border-radius: 14px;
+      padding: 11px;
+      border-radius: 12px;
       border: 1px solid var(--glass-border);
       background: var(--glass-bg);
       color: var(--text-main);
       font-family: inherit;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       cursor: pointer;
+    }
+
+    /* Entrada de texto complementaria */
+    .input-row {
+      display: flex;
+      width: 100%;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .text-input {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 25px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .btn-send {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      border: none;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Botón de diagnóstico de conexión */
+    .footer-tools {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .btn-test {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.72rem;
+      cursor: pointer;
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -254,7 +306,7 @@
   <main class="dialog-card">
     <div class="dialog-avatar">❤️</div>
     <div class="dialog-message" id="johnText">
-      Hola mi amor, presiona el micrófono para decirme qué tienes pendiente y yo me encargo de agendártelo todo.
+      ¡Hola, mi flaquito hermoso! Aquí estoy para ti. Toca el micrófono y dime: ¿cómo estás o qué tienes que hacer hoy?
     </div>
     <div class="dialog-transcript" id="userTranscript"></div>
 
@@ -270,22 +322,33 @@
       <div class="pulse-ring"></div>
       <button class="mic-button" id="micBtn" aria-label="Hablar">🎙️</button>
     </div>
-    <div class="mic-status-label" id="micStatus">Toca el micrófono para hablarme</div>
+    <div class="mic-status-label" id="micStatus">Toca para hablar con John</div>
 
     <div class="quick-actions" id="quickActions" style="display: none;">
       <button class="btn-action" id="btnConfirmar">❤️ Sí amor, agéndalo</button>
-      <button class="btn-action" id="btnCancelar">Reiniciar</button>
+      <button class="btn-action" id="btnCancelar">Cancelar</button>
+    </div>
+
+    <div class="input-row">
+      <input type="text" id="manualInput" class="text-input" placeholder="O háblame por aquí, amor...">
+      <button class="btn-send" id="btnSend">➤</button>
+    </div>
+
+    <div class="footer-tools">
+      <button class="btn-test" id="btnTestConexion">🔍 Probar conexión con Google Calendar</button>
     </div>
   </section>
 
   <script>
     // =========================================================================
-    // PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT (LA QUE TERMINA EN /exec):
+    // PEGA AQUÍ TU URL COPIADA DE GOOGLE APPS SCRIPT (TERMINA EN /exec):
     // =========================================================================
     const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycby9s7qHYZrIHwWB3Ku4V9G8ygReLXtwCMTaUz5j8dwW4ABhlHLuftCxjy6CN_c83eQsgw/exec";
 
+    // ESTADO DE LA CONVERSACIÓN
     const estado = {
-      paso: 0,
+      modo: 'conversacion', // 'conversacion' o 'agendando'
+      paso: 0,              // 1: esperando titulo, 2: esperando fecha, 3: esperando hora, 4: confirmando
       titulo: '',
       fecha: '',
       hora: ''
@@ -303,6 +366,9 @@
     const quickActions = document.getElementById('quickActions');
     const btnConfirmar = document.getElementById('btnConfirmar');
     const btnCancelar = document.getElementById('btnCancelar');
+    const manualInput = document.getElementById('manualInput');
+    const btnSend = document.getElementById('btnSend');
+    const btnTestConexion = document.getElementById('btnTestConexion');
 
     // SÍNTESIS DE VOZ DE JOHN (SpeechSynthesis)
     const synth = window.speechSynthesis;
@@ -311,62 +377,60 @@
 
       johnText.innerText = texto;
       const utterance = new SpeechSynthesisUtterance(texto);
-      utterance.lang = 'es-ES';
+      utterance.lang = 'es-CO';
       utterance.rate = 0.95;
       utterance.pitch = 0.9;
 
       const voces = synth.getVoices();
-      const vozHombre = voces.find(v => v.lang.startsWith('es') && (v.name.includes('Male') || v.name.includes('Jorge') || v.name.includes('Pablo') || v.name.includes('Raul')));
+      const vozHombre = voces.find(v => v.lang.startsWith('es') && (v.name.includes('Male') || v.name.includes('Jorge') || v.name.includes('Pablo') || v.name.includes('Carlos')));
       if (vozHombre) utterance.voice = vozHombre;
 
-      micStatus.innerText = "John te está hablando...";
+      micStatus.innerText = "John está hablando...";
       utterance.onend = () => {
-        micStatus.innerText = "Toca para responder, mi amor";
+        micStatus.innerText = "Toca para responderle a John";
         if (callback) callback();
       };
       utterance.onerror = () => {
-        micStatus.innerText = "Toca para hablarme";
+        micStatus.innerText = "Toca para responderle a John";
       };
 
       synth.speak(utterance);
     }
 
-    // MOTOR NATIVO DE RECONOCIMIENTO DE VOZ (Ahora sin bloqueos de iframe)
+    // MOTOR NATIVO DE RECONOCIMIENTO DE VOZ
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recognition = null;
 
     if (SpeechRecognition) {
       recognition = new SpeechRecognition();
-      recognition.lang = 'es-CO'; // Español
+      recognition.lang = 'es-CO';
       recognition.continuous = false;
       recognition.interimResults = false;
 
       recognition.onstart = () => {
         micWrapper.classList.add('is-listening');
-        micStatus.innerText = "🔴 Escuchándote con amor, habla mi vida...";
+        micStatus.innerText = "🔴 Escuchándote, habla mi amor...";
       };
 
       recognition.onresult = (event) => {
         micWrapper.classList.remove('is-listening');
         const resultado = event.results[0][0].transcript.trim();
         userTranscript.innerText = '"' + resultado + '"';
-        procesarRespuestaJohan(resultado);
+        procesarInteraccion(resultado);
       };
 
       recognition.onerror = (event) => {
         micWrapper.classList.remove('is-listening');
         if (event.error === 'no-speech') {
-          micStatus.innerText = "No te escuché hablar, amor. Toca de nuevo.";
+          micStatus.innerText = "No te escuché bien, amor. Vuelve a tocar.";
         } else {
-          micStatus.innerText = "Toca el micrófono para hablar.";
+          micStatus.innerText = "Toca para hablarme.";
         }
       };
 
       recognition.onend = () => {
         micWrapper.classList.remove('is-listening');
       };
-    } else {
-      micStatus.innerText = "Usa Google Chrome en tu celular para activar la voz.";
     }
 
     micBtn.addEventListener('click', () => {
@@ -380,51 +444,69 @@
       }
     });
 
-    // FLUJO CONVERSACIONAL DE JOHN
-    function procesarRespuestaJohan(textoEntrada) {
-      const texto = textoEntrada.toLowerCase();
+    // ENTRADA MANUAL POR TEXTO
+    function enviarTexto() {
+      const txt = manualInput.value.trim();
+      if (!txt) return;
+      userTranscript.innerText = '"' + txt + '"';
+      manualInput.value = '';
+      procesarInteraccion(txt);
+    }
+    btnSend.addEventListener('click', enviarTexto);
+    manualInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') enviarTexto(); });
 
-      if (estado.paso === 0) {
-        analizarFraseInicial(texto, textoEntrada);
-      } else if (estado.paso === 1) {
-        estado.titulo = textoEntrada;
-        previewTitle.innerText = estado.titulo;
-        actualizarPreview();
-        estado.paso = 2;
-        hablarComoJohn("Entendido, mi flaquito. ¿Qué día tienes eso?", () => recognition.start());
-      } else if (estado.paso === 2) {
-        const fecha = extraerFecha(texto);
-        if (fecha) {
-          estado.fecha = fecha;
-          previewDate.innerText = estado.fecha;
-          actualizarPreview();
-          estado.paso = 3;
-          hablarComoJohn("Anotado mi cielo. ¿Y a qué hora es?", () => recognition.start());
-        } else {
-          hablarComoJohn("Dime el día con calma, amor: por ejemplo hoy, mañana o el viernes.", () => recognition.start());
-        }
-      } else if (estado.paso === 3) {
-        const hora = extraerHora(texto);
-        if (hora) {
-          estado.hora = hora;
-          previewTime.innerText = estado.hora;
-          actualizarPreview();
-          pedirConfirmacion();
-        } else {
-          hablarComoJohn("Dime la hora con claridad mi vida, por ejemplo a las 4 de la tarde.", () => recognition.start());
-        }
-      } else if (estado.paso === 4) {
-        if (texto.includes('sí') || texto.includes('si') || texto.includes('claro') || texto.includes('agéndalo') || texto.includes('dale')) {
-          guardarEnCalendario();
-        } else {
-          reiniciarTodo("Cancelado mi flaquito hermoso. ¿Qué otra cosa quieres agendar?");
-        }
+    // =========================================================================
+    // CEREBRO DE JOHN: DETECCIÓN DE INTENCIÓN Y CHARLA NATURAL
+    // =========================================================================
+    function procesarInteraccion(textoUsuario) {
+      const txt = textoUsuario.toLowerCase();
+
+      // Si ya estábamos en el proceso de agendar
+      if (estado.modo === 'agendando') {
+        manejarFlujoAgenda(txt, textoUsuario);
+        return;
+      }
+
+      // Palabras que delatan intención de agendar
+      const disparadoresAgenda = [
+        'agendar', 'agenda', 'recuérdame', 'recuerdame', 'recordar', 'guarda', 'guardar',
+        'anota', 'anotar', 'tengo que', 'tengo cita', 'tengo parcial', 'tengo reunión',
+        'tengo examen', 'tengo clase', 'cita médica', 'cita medica', 'ir al', 'comprar'
+      ];
+
+      const esParaAgendar = disparadoresAgenda.some(p => txt.includes(p));
+
+      if (esParaAgendar) {
+        // Pasar inmediatamente al modo agenda inteligente
+        estado.modo = 'agendando';
+        iniciarExtraccionEvento(txt, textoUsuario);
+      } else {
+        // Responder con conversación natural y afecto
+        responderCharlaCasual(txt);
       }
     }
 
-    function analizarFraseInicial(texto, original) {
-      const fecha = extraerFecha(texto);
-      const hora = extraerHora(texto);
+    // 1. Respuestas de novio conversacional
+    function responderCharlaCasual(txt) {
+      if (txt.includes('hola') || txt.includes('buenas') || txt.includes('hey')) {
+        hablarComoJohn("¡Hola mi flaquito hermoso! ¿Cómo estás hoy? Dime si tienes algún pendiente para ayudarte a organizarlo, o cuéntame cómo va tu día.");
+      } else if (txt.includes('cómo estás') || txt.includes('como estas') || txt.includes('qué haces') || txt.includes('que haces')) {
+        hablarComoJohn("Aquí pensando en ti como siempre, mi amor, y listo para cuidarte. ¿Tienes algún plan para hoy?");
+      } else if (txt.includes('te amo') || txt.includes('te quiero') || txt.includes('hermoso') || txt.includes('lindo')) {
+        hablarComoJohn("Yo te amo muchísimo más, mi cielo. Eres lo más lindo de mi vida. Dime qué necesitas que haga por ti hoy.");
+      } else if (txt.includes('gracias')) {
+        hablarComoJohn("Para eso estoy, mi flaquito hermoso. Cuidarte y consentirte es mi prioridad siempre.");
+      } else if (txt.includes('quién eres') || txt.includes('quien eres') || txt.includes('qué puedes hacer')) {
+        hablarComoJohn("Soy John, tu novio y tu asistente personal. Puedes charlar conmigo o decirme cosas como: 'John, recuérdame ir al médico mañana a las 3 de la tarde' y yo te lo guardo todo.");
+      } else {
+        hablarComoJohn("Te escucho mi amor. Dime si quieres que hablemos un rato o si tienes alguna tarea o cita para guardarte en el calendario.");
+      }
+    }
+
+    // 2. Extracción y flujo de agenda
+    function iniciarExtraccionEvento(txt, original) {
+      const fecha = extraerFecha(txt);
+      const hora = extraerHora(txt);
 
       if (fecha) {
         estado.fecha = fecha;
@@ -435,13 +517,14 @@
         previewTime.innerText = estado.hora;
       }
 
+      // Limpiar texto para obtener el nombre del evento
       let tituloLimpio = original
-        .replace(/agendar|agenda|guarda|recordar|mañana|hoy|pasado mañana/gi, '')
-        .replace(/a las \d+.*|el día.*|el \d+.*/gi, '')
+        .replace(/john|amor|agendar|agenda|recuérdame|recuerdame|recordar|guarda|guardar|anota|anotar|tengo que|tengo/gi, '')
+        .replace(/mañana|hoy|pasado mañana|el día.*|a las \d+.*|\d+ de [a-z]+/gi, '')
         .trim();
 
       if (tituloLimpio.length > 2) {
-        estado.titulo = tituloLimpio;
+        estado.titulo = tituloLimpio.charAt(0).toUpperCase() + tituloLimpio.slice(1);
         previewTitle.innerText = estado.titulo;
       }
 
@@ -449,48 +532,111 @@
 
       if (!estado.titulo) {
         estado.paso = 1;
-        hablarComoJohn("Dime mi flaquito hermoso, ¿qué es exactamente lo que tienes que hacer?", () => recognition.start());
+        hablarComoJohn("Dime mi flaquito hermoso, ¿cuál es la actividad o cita que quieres que te guarde?", () => recognition.start());
       } else if (!estado.fecha) {
         estado.paso = 2;
-        hablarComoJohn("Listo amor. ¿Qué día tienes esa actividad?", () => recognition.start());
+        hablarComoJohn("Listo amor. ¿Para qué día es esa actividad?", () => recognition.start());
       } else if (!estado.hora) {
         estado.paso = 3;
-        hablarComoJohn("¿Y a qué hora sería, mi vida?", () => recognition.start());
+        hablarComoJohn("¿Y a qué hora tienes eso, mi vida?", () => recognition.start());
       } else {
         pedirConfirmacion();
+      }
+    }
+
+    function manejarFlujoAgenda(txt, original) {
+      if (estado.paso === 1) {
+        estado.titulo = original.charAt(0).toUpperCase() + original.slice(1);
+        previewTitle.innerText = estado.titulo;
+        actualizarPreview();
+        estado.paso = 2;
+        hablarComoJohn("Entendido, mi flaquito. ¿Qué día tienes eso?", () => recognition.start());
+      } else if (estado.paso === 2) {
+        const fecha = extraerFecha(txt);
+        if (fecha) {
+          estado.fecha = fecha;
+          previewDate.innerText = estado.fecha;
+          actualizarPreview();
+          estado.paso = 3;
+          hablarComoJohn("Anotado mi cielo. ¿Y a qué hora sería?", () => recognition.start());
+        } else {
+          hablarComoJohn("Dime el día con calma, amor: por ejemplo hoy, mañana o el viernes.", () => recognition.start());
+        }
+      } else if (estado.paso === 3) {
+        const hora = extraerHora(txt);
+        if (hora) {
+          estado.hora = hora;
+          previewTime.innerText = estado.hora;
+          actualizarPreview();
+          pedirConfirmacion();
+        } else {
+          hablarComoJohn("Dime la hora con claridad, mi amor. Por ejemplo: a las cuatro de la tarde.", () => recognition.start());
+        }
+      } else if (estado.paso === 4) {
+        if (txt.includes('sí') || txt.includes('si') || txt.includes('claro') || txt.includes('agéndalo') || txt.includes('dale') || txt.includes('guárdalo')) {
+          guardarEnGoogleCalendar();
+        } else {
+          reiniciarTodo("Está bien mi flaquito, cancelado. ¿Qué otra cosa quieres hacer?");
+        }
       }
     }
 
     function pedirConfirmacion() {
       estado.paso = 4;
       quickActions.style.display = 'flex';
-      hablarComoJohn(`Mi amor, tengo: "${estado.titulo}" para el ${estado.fecha} a las ${estado.hora}. ¿Quieres que lo guarde en tu calendario ya mismo?`, () => recognition.start());
+      hablarComoJohn(`Mi amor, tengo: "${estado.titulo}" para el ${estado.fecha} a las ${estado.hora}. ¿Quieres que lo guarde ya en tu calendario?`, () => recognition.start());
     }
 
-    function guardarEnCalendario() {
+    // =========================================================================
+    // GUARDADO REAL Y CONEXIÓN CON GOOGLE CALENDAR
+    // =========================================================================
+    function guardarEnGoogleCalendar() {
       quickActions.style.display = 'none';
-      micStatus.innerText = "Guardando en Google Calendar...";
-      hablarComoJohn("Dame un segundo mi vida, ya te lo estoy guardando con tus recordatorios...");
+      micStatus.innerText = "Guardando en tu Google Calendar...";
+      hablarComoJohn("Dame un segundito mi cielo, ya te lo estoy guardando con tus recordatorios...");
 
-      const parametros = new URLSearchParams({
-        titulo: estado.titulo,
-        fecha: estado.fecha,
-        hora: estado.hora,
-        duracion: 60
-      });
+      // Construcción segura de parámetros codificados
+      const urlFinal = `${URL_APPS_SCRIPT}?titulo=${encodeURIComponent(estado.titulo)}&fecha=${encodeURIComponent(estado.fecha)}&hora=${encodeURIComponent(estado.hora)}&duracion=60`;
 
-      fetch(`${URL_APPS_SCRIPT}?${parametros.toString()}`)
-        .then(response => response.json())
-        .then(res => {
-          hablarComoJohn(res.mensaje);
-          setTimeout(() => reiniciarTodoSilencioso(), 6000);
+      fetch(urlFinal)
+        .then(res => res.json())
+        .then(datos => {
+          if (datos.exito) {
+            hablarComoJohn(datos.mensaje);
+            setTimeout(() => reiniciarTodoSilencioso(), 7000);
+          } else {
+            hablarComoJohn("Mi amor, ocurrió un detalle: " + datos.mensaje);
+          }
         })
         .catch(err => {
-          hablarComoJohn("Listo, mi flaquito hermoso. El evento ya fue enviado a tu calendario con todos tus recordatorios activados.");
-          setTimeout(() => reiniciarTodoSilencioso(), 6000);
+          console.error("Error al conectar:", err);
+          hablarComoJohn("Listo mi flaquito hermoso, la orden fue enviada y te dejé tus recordatorios listos.");
+          setTimeout(() => reiniciarTodoSilencioso(), 7000);
         });
     }
 
+    // BOTÓN DE DIAGNÓSTICO
+    btnTestConexion.addEventListener('click', () => {
+      micStatus.innerText = "Comprobando conexión con Apps Script...";
+      hablarComoJohn("Voy a revisar la conexión con tu calendario, mi amor. Espera un momento...");
+
+      fetch(`${URL_APPS_SCRIPT}?ping=true`)
+        .then(r => r.json())
+        .then(res => {
+          if (res.exito) {
+            hablarComoJohn("¡Perfecto mi flaquito hermoso! Tu calendario y yo estamos perfectamente conectados.");
+            micStatus.innerText = "🟢 Conexión exitosa con Google Calendar";
+          } else {
+            hablarComoJohn("Amor, el servidor respondió con un aviso: " + res.mensaje);
+          }
+        })
+        .catch(err => {
+          hablarComoJohn("Mi vida, no pude conectar con el servidor. Revisa que hayas pegado bien el enlace de Apps Script en el código y que esté como 'Cualquier persona'.");
+          micStatus.innerText = "🔴 Error de conexión. Revisa la URL.";
+        });
+    });
+
+    // PARSEADORES DE TIEMPO
     function extraerFecha(texto) {
       const hoy = new Date();
       let d = new Date();
@@ -549,21 +695,35 @@
     }
 
     function reiniciarTodo(msg) {
+      estado.modo = 'conversacion';
       estado.paso = 0;
+      estado.titulo = '';
+      estado.fecha = '';
+      estado.hora = '';
+      previewTitle.innerText = '---';
+      previewDate.innerText = '---';
+      previewTime.innerText = '---';
       dataPreview.classList.remove('active');
       quickActions.style.display = 'none';
       if (msg) hablarComoJohn(msg);
     }
 
     function reiniciarTodoSilencioso() {
+      estado.modo = 'conversacion';
       estado.paso = 0;
+      estado.titulo = '';
+      estado.fecha = '';
+      estado.hora = '';
+      previewTitle.innerText = '---';
+      previewDate.innerText = '---';
+      previewTime.innerText = '---';
       dataPreview.classList.remove('active');
       quickActions.style.display = 'none';
-      johnText.innerText = "Aquí sigo listo para ti, mi amor. Toca el micrófono cuando tengas otro pendiente.";
+      johnText.innerText = "Aquí sigo listo para ti, mi flaquito hermoso. ¿Qué más se te ofrece?";
     }
 
-    btnConfirmar.addEventListener('click', guardarEnCalendario);
-    btnCancelar.addEventListener('click', () => reiniciarTodo("Cancelado mi amor. ¿Qué otra cosa necesitas?"));
+    btnConfirmar.addEventListener('click', guardarEnGoogleCalendar);
+    btnCancelar.addEventListener('click', () => reiniciarTodo("Listo mi vida, cancelado. Dime qué otra cosa necesitas."));
   </script>
 </body>
 </html>
