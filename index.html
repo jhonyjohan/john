@@ -285,7 +285,7 @@
   <main class="dialog-card">
     <div class="dialog-avatar">❤️</div>
     <div class="dialog-message" id="johnText">
-      ¡Hola mi flaquito hermoso! Aquí estoy contigo. Toca el micrófono y dime: ¿cómo estás o qué necesitas agendar hoy?
+      ¡Hola mi flaquito hermoso! Aquí estoy contigo. Toca el micrófono y dime: ¿cómo va tu día o qué necesitas agendar?
     </div>
     <div class="dialog-transcript" id="userTranscript"></div>
 
@@ -396,7 +396,7 @@
     }
 
     micBtn.addEventListener('click', () => {
-      if (procesandoPeticion) return; // Evita enviar solicitudes dobles si está pensando
+      if (procesandoPeticion) return;
       if (synth.speaking) synth.cancel();
       if (recognition) {
         try {
@@ -419,12 +419,12 @@
     manualInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') enviarTextoManual(); });
 
     // =========================================================================
-    // COMUNICACIÓN CON TEMPORIZADOR DE SEGURIDAD (TIMEOUT)
+    // COMUNICACIÓN CON TIEMPO DE ESPERA HOLGADO (35 SEGUNDOS)
     // =========================================================================
     function enviarMensajeAJohnIA(mensajeUsuario) {
       procesandoPeticion = true;
       micWrapper.classList.add('is-thinking');
-      micStatus.innerText = "John está pensando con amor...";
+      micStatus.innerText = "John está pensando...";
 
       const fechaLocal = new Date().toISOString();
       const parametros = new URLSearchParams({
@@ -433,9 +433,9 @@
         fechaLocal: fechaLocal
       });
 
-      // Temporizador de 12 segundos: si la red se cuelga, se desbloquea solo
+      // 35 segundos de tolerancia para redes móviles
       const controladorTimeout = new AbortController();
-      const timeoutId = setTimeout(() => controladorTimeout.abort(), 12000);
+      const timeoutId = setTimeout(() => controladorTimeout.abort(), 35000);
 
       fetch(`${URL_APPS_SCRIPT}?${parametros.toString()}`, { signal: controladorTimeout.signal })
         .then(res => res.json())
@@ -476,8 +476,7 @@
           micWrapper.classList.remove('is-thinking');
           console.error("Error de conexión:", err);
 
-          // Respuesta afectuosa sin códigos de error
-          hablarComoJohn("Mi amor, la conexión tardó un poco. Vuelve a tocarme y dímelo otra vez, mi flaquito hermoso.");
+          hablarComoJohn("Mi amor, no te alcancé a escuchar con claridad. Vuelve a tocarme y dímelo otra vez, mi vida.");
         });
     }
   </script>
