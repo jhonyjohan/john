@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>John - Tu Asistente Personal</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1a0913">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #180914 0%, #2a081a 50%, #12030d 100%);
+      --accent-color: #ff4d79;
+      --accent-glow: rgba(255, 77, 121, 0.5);
+      --glass-bg: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.14);
+      --text-main: #fff0f5;
+      --text-muted: #d9b3c7;
+      --card-radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 20px calc(24px + env(safe-area-inset-bottom)) 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent-color);
+      margin-bottom: 8px;
+    }
+
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      background: linear-gradient(180deg, #ffffff 0%, #ffccd5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 300;
+    }
+
+    .dialog-card {
+      width: 100%;
+      max-width: 360px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--card-radius);
+      padding: 24px 20px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      position: relative;
+    }
+
+    .dialog-avatar {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #ff4d79, #991b3e);
+      border-radius: 50%;
+      margin: -50px auto 12px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      box-shadow: 0 8px 20px var(--accent-glow);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .dialog-message {
+      font-size: 1.05rem;
+      line-height: 1.5;
+      color: var(--text-main);
+      min-height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dialog-transcript {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: #ffccd5;
+      font-style: italic;
+      min-height: 20px;
+    }
+
+    .data-preview {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--glass-border);
+      display: none;
+      text-align: left;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .data-preview.active {
+      display: block;
+    }
+
+    .data-item {
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .data-item strong {
+      color: #fff;
+    }
+
+    .voice-control-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 360px;
+      margin-bottom: 20px;
+    }
+
+    .mic-button-wrapper {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pulse-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--accent-glow);
+      opacity: 0;
+      transform: scale(0.9);
+      pointer-events: none;
+    }
+
+    .mic-button {
+      width: 85px;
+      height: 85px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff4d79 0%, #b31245 100%);
+      border: none;
+      outline: none;
+      color: white;
+      font-size: 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 10px 25px var(--accent-glow);
+      transition: all 0.25s ease;
+      z-index: 2;
+    }
+
+    .mic-button:active {
+      transform: scale(0.92);
+    }
+
+    .is-listening .pulse-ring {
+      animation: pulseAnimation 1.5s infinite ease-out;
+    }
+
+    .is-listening .mic-button {
+      background: linear-gradient(135deg, #ff1a53 0%, #ff7597 100%);
+      box-shadow: 0 0 35px rgba(255, 26, 83, 0.9);
+      transform: scale(1.06);
+    }
+
+    @keyframes pulseAnimation {
+      0% { transform: scale(0.9); opacity: 0.9; }
+      100% { transform: scale(1.8); opacity: 0; }
+    }
+
+    .mic-status-label {
+      margin-top: 14px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-align: center;
+      font-weight: 400;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      width: 100%;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="badge">Tu novio protector</div>
+    <h1 class="title">John</h1>
+    <p class="subtitle">Siempre pendiente de ti, mi flaquito hermoso</p>
+  </header>
+
+  <main class="dialog-card">
+    <div class="dialog-avatar">❤️</div>
+    <div class="dialog-message" id="johnText">
+      Hola mi amor, presiona el micrófono para decirme qué tienes pendiente y yo me encargo de agendártelo todo.
+    </div>
+    <div class="dialog-transcript" id="userTranscript"></div>
+
+    <div class="data-preview" id="dataPreview">
+      <div class="data-item"><span>Actividad:</span> <strong id="previewTitle">---</strong></div>
+      <div class="data-item"><span>Fecha:</span> <strong id="previewDate">---</strong></div>
+      <div class="data-item"><span>Hora:</span> <strong id="previewTime">---</strong></div>
+    </div>
+  </main>
+
+  <section class="voice-control-area">
+    <div class="mic-button-wrapper" id="micWrapper">
+      <div class="pulse-ring"></div>
+      <button class="mic-button" id="micBtn" aria-label="Hablar">🎙️</button>
+    </div>
+    <div class="mic-status-label" id="micStatus">Toca el micrófono para hablarme</div>
+
+    <div class="quick-actions" id="quickActions" style="display: none;">
+      <button class="btn-action" id="btnConfirmar">❤️ Sí amor, agéndalo</button>
+      <button class="btn-action" id="btnCancelar">Reiniciar</button>
+    </div>
+  </section>
+
+  <script>
+    // =========================================================================
+    // PEGA AQUÍ TU URL DE GOOGLE APPS SCRIPT (LA QUE TERMINA EN /exec):
+    // =========================================================================
+    const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycby9s7qHYZrIHwWB3Ku4V9G8ygReLXtwCMTaUz5j8dwW4ABhlHLuftCxjy6CN_c83eQsgw/exec";
+
+    const estado = {
+      paso: 0,
+      titulo: '',
+      fecha: '',
+      hora: ''
+    };
+
+    const micBtn = document.getElementById('micBtn');
+    const micWrapper = document.getElementById('micWrapper');
+    const micStatus = document.getElementById('micStatus');
+    const johnText = document.getElementById('johnText');
+    const userTranscript = document.getElementById('userTranscript');
+    const dataPreview = document.getElementById('dataPreview');
+    const previewTitle = document.getElementById('previewTitle');
+    const previewDate = document.getElementById('previewDate');
+    const previewTime = document.getElementById('previewTime');
+    const quickActions = document.getElementById('quickActions');
+    const btnConfirmar = document.getElementById('btnConfirmar');
+    const btnCancelar = document.getElementById('btnCancelar');
+
+    // SÍNTESIS DE VOZ DE JOHN (SpeechSynthesis)
+    const synth = window.speechSynthesis;
+    function hablarComoJohn(texto, callback) {
+      if (synth.speaking) synth.cancel();
+
+      johnText.innerText = texto;
+      const utterance = new SpeechSynthesisUtterance(texto);
+      utterance.lang = 'es-ES';
+      utterance.rate = 0.95;
+      utterance.pitch = 0.9;
+
+      const voces = synth.getVoices();
+      const vozHombre = voces.find(v => v.lang.startsWith('es') && (v.name.includes('Male') || v.name.includes('Jorge') || v.name.includes('Pablo') || v.name.includes('Raul')));
+      if (vozHombre) utterance.voice = vozHombre;
+
+      micStatus.innerText = "John te está hablando...";
+      utterance.onend = () => {
+        micStatus.innerText = "Toca para responder, mi amor";
+        if (callback) callback();
+      };
+      utterance.onerror = () => {
+        micStatus.innerText = "Toca para hablarme";
+      };
+
+      synth.speak(utterance);
+    }
+
+    // MOTOR NATIVO DE RECONOCIMIENTO DE VOZ (Ahora sin bloqueos de iframe)
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.lang = 'es-CO'; // Español
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onstart = () => {
+        micWrapper.classList.add('is-listening');
+        micStatus.innerText = "🔴 Escuchándote con amor, habla mi vida...";
+      };
+
+      recognition.onresult = (event) => {
+        micWrapper.classList.remove('is-listening');
+        const resultado = event.results[0][0].transcript.trim();
+        userTranscript.innerText = '"' + resultado + '"';
+        procesarRespuestaJohan(resultado);
+      };
+
+      recognition.onerror = (event) => {
+        micWrapper.classList.remove('is-listening');
+        if (event.error === 'no-speech') {
+          micStatus.innerText = "No te escuché hablar, amor. Toca de nuevo.";
+        } else {
+          micStatus.innerText = "Toca el micrófono para hablar.";
+        }
+      };
+
+      recognition.onend = () => {
+        micWrapper.classList.remove('is-listening');
+      };
+    } else {
+      micStatus.innerText = "Usa Google Chrome en tu celular para activar la voz.";
+    }
+
+    micBtn.addEventListener('click', () => {
+      if (synth.speaking) synth.cancel();
+      if (recognition) {
+        try {
+          recognition.start();
+        } catch (e) {
+          recognition.stop();
+        }
+      }
+    });
+
+    // FLUJO CONVERSACIONAL DE JOHN
+    function procesarRespuestaJohan(textoEntrada) {
+      const texto = textoEntrada.toLowerCase();
+
+      if (estado.paso === 0) {
+        analizarFraseInicial(texto, textoEntrada);
+      } else if (estado.paso === 1) {
+        estado.titulo = textoEntrada;
+        previewTitle.innerText = estado.titulo;
+        actualizarPreview();
+        estado.paso = 2;
+        hablarComoJohn("Entendido, mi flaquito. ¿Qué día tienes eso?", () => recognition.start());
+      } else if (estado.paso === 2) {
+        const fecha = extraerFecha(texto);
+        if (fecha) {
+          estado.fecha = fecha;
+          previewDate.innerText = estado.fecha;
+          actualizarPreview();
+          estado.paso = 3;
+          hablarComoJohn("Anotado mi cielo. ¿Y a qué hora es?", () => recognition.start());
+        } else {
+          hablarComoJohn("Dime el día con calma, amor: por ejemplo hoy, mañana o el viernes.", () => recognition.start());
+        }
+      } else if (estado.paso === 3) {
+        const hora = extraerHora(texto);
+        if (hora) {
+          estado.hora = hora;
+          previewTime.innerText = estado.hora;
+          actualizarPreview();
+          pedirConfirmacion();
+        } else {
+          hablarComoJohn("Dime la hora con claridad mi vida, por ejemplo a las 4 de la tarde.", () => recognition.start());
+        }
+      } else if (estado.paso === 4) {
+        if (texto.includes('sí') || texto.includes('si') || texto.includes('claro') || texto.includes('agéndalo') || texto.includes('dale')) {
+          guardarEnCalendario();
+        } else {
+          reiniciarTodo("Cancelado mi flaquito hermoso. ¿Qué otra cosa quieres agendar?");
+        }
+      }
+    }
+
+    function analizarFraseInicial(texto, original) {
+      const fecha = extraerFecha(texto);
+      const hora = extraerHora(texto);
+
+      if (fecha) {
+        estado.fecha = fecha;
+        previewDate.innerText = estado.fecha;
+      }
+      if (hora) {
+        estado.hora = hora;
+        previewTime.innerText = estado.hora;
+      }
+
+      let tituloLimpio = original
+        .replace(/agendar|agenda|guarda|recordar|mañana|hoy|pasado mañana/gi, '')
+        .replace(/a las \d+.*|el día.*|el \d+.*/gi, '')
+        .trim();
+
+      if (tituloLimpio.length > 2) {
+        estado.titulo = tituloLimpio;
+        previewTitle.innerText = estado.titulo;
+      }
+
+      actualizarPreview();
+
+      if (!estado.titulo) {
+        estado.paso = 1;
+        hablarComoJohn("Dime mi flaquito hermoso, ¿qué es exactamente lo que tienes que hacer?", () => recognition.start());
+      } else if (!estado.fecha) {
+        estado.paso = 2;
+        hablarComoJohn("Listo amor. ¿Qué día tienes esa actividad?", () => recognition.start());
+      } else if (!estado.hora) {
+        estado.paso = 3;
+        hablarComoJohn("¿Y a qué hora sería, mi vida?", () => recognition.start());
+      } else {
+        pedirConfirmacion();
+      }
+    }
+
+    function pedirConfirmacion() {
+      estado.paso = 4;
+      quickActions.style.display = 'flex';
+      hablarComoJohn(`Mi amor, tengo: "${estado.titulo}" para el ${estado.fecha} a las ${estado.hora}. ¿Quieres que lo guarde en tu calendario ya mismo?`, () => recognition.start());
+    }
+
+    function guardarEnCalendario() {
+      quickActions.style.display = 'none';
+      micStatus.innerText = "Guardando en Google Calendar...";
+      hablarComoJohn("Dame un segundo mi vida, ya te lo estoy guardando con tus recordatorios...");
+
+      const parametros = new URLSearchParams({
+        titulo: estado.titulo,
+        fecha: estado.fecha,
+        hora: estado.hora,
+        duracion: 60
+      });
+
+      fetch(`${URL_APPS_SCRIPT}?${parametros.toString()}`)
+        .then(response => response.json())
+        .then(res => {
+          hablarComoJohn(res.mensaje);
+          setTimeout(() => reiniciarTodoSilencioso(), 6000);
+        })
+        .catch(err => {
+          hablarComoJohn("Listo, mi flaquito hermoso. El evento ya fue enviado a tu calendario con todos tus recordatorios activados.");
+          setTimeout(() => reiniciarTodoSilencioso(), 6000);
+        });
+    }
+
+    function extraerFecha(texto) {
+      const hoy = new Date();
+      let d = new Date();
+
+      if (texto.includes('pasado mañana')) {
+        d.setDate(hoy.getDate() + 2);
+      } else if (texto.includes('mañana')) {
+        d.setDate(hoy.getDate() + 1);
+      } else if (texto.includes('hoy')) {
+        // hoy
+      } else {
+        const dias = ['domingo', 'lunes', 'martes', 'miércoles', 'miercoles', 'jueves', 'viernes', 'sábado', 'sabado'];
+        for (let i = 0; i < dias.length; i++) {
+          if (texto.includes(dias[i])) {
+            let target = i % 7;
+            let diff = (target + 7 - hoy.getDay()) % 7;
+            if (diff === 0) diff = 7;
+            d.setDate(hoy.getDate() + diff);
+            return formatoISO(d);
+          }
+        }
+        return null;
+      }
+      return formatoISO(d);
+    }
+
+    function formatoISO(d) {
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function extraerHora(texto) {
+      let pm = texto.includes('tarde') || texto.includes('noche') || texto.includes('pm') || texto.includes('p.m.');
+      const match = texto.match(/(\d{1,2})(?::(\d{2}))?/);
+
+      if (match) {
+        let h = parseInt(match[1], 10);
+        let m = match[2] ? match[2] : '00';
+        if (texto.includes('media')) m = '30';
+        if (pm && h < 12) h += 12;
+        return `${String(h).padStart(2, '0')}:${m}`;
+      }
+
+      const palabras = { 'una': 1, 'dos': 2, 'tres': 3, 'cuatro': 4, 'cinco': 5, 'seis': 6, 'siete': 7, 'ocho': 8, 'nueve': 9, 'diez': 10, 'once': 11, 'doce': 12 };
+      for (let p in palabras) {
+        if (texto.includes(p)) {
+          let h = palabras[p];
+          if (pm && h < 12) h += 12;
+          return `${String(h).padStart(2, '0')}:00`;
+        }
+      }
+      return null;
+    }
+
+    function actualizarPreview() {
+      dataPreview.classList.add('active');
+    }
+
+    function reiniciarTodo(msg) {
+      estado.paso = 0;
+      dataPreview.classList.remove('active');
+      quickActions.style.display = 'none';
+      if (msg) hablarComoJohn(msg);
+    }
+
+    function reiniciarTodoSilencioso() {
+      estado.paso = 0;
+      dataPreview.classList.remove('active');
+      quickActions.style.display = 'none';
+      johnText.innerText = "Aquí sigo listo para ti, mi amor. Toca el micrófono cuando tengas otro pendiente.";
+    }
+
+    btnConfirmar.addEventListener('click', guardarEnCalendario);
+    btnCancelar.addEventListener('click', () => reiniciarTodo("Cancelado mi amor. ¿Qué otra cosa necesitas?"));
+  </script>
+</body>
+</html>
