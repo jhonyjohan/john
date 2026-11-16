@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>John - Tu Asistente con IA</title>
+  <title>John - Tu Novio & Asistente</title>
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -79,7 +79,6 @@
       font-weight: 300;
     }
 
-    /* Tarjeta de Diálogo */
     .dialog-card {
       width: 100%;
       max-width: 360px;
@@ -126,7 +125,6 @@
       min-height: 18px;
     }
 
-    /* Tarjeta de evento detectado por Gemini */
     .data-preview {
       margin-top: 15px;
       padding-top: 12px;
@@ -158,7 +156,6 @@
       line-height: 1.3;
     }
 
-    /* Área del Micrófono */
     .voice-control-area {
       display: flex;
       flex-direction: column;
@@ -222,7 +219,7 @@
 
     .is-thinking .mic-button {
       background: linear-gradient(135deg, #9b51e0 0%, #e056a0 100%);
-      animation: rotateThinking 2s infinite linear;
+      animation: pulseThinking 1.2s infinite alternate;
     }
 
     @keyframes pulseAnimation {
@@ -230,9 +227,9 @@
       100% { transform: scale(1.75); opacity: 0; }
     }
 
-    @keyframes rotateThinking {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    @keyframes pulseThinking {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.08); opacity: 1; }
     }
 
     .mic-status-label {
@@ -280,7 +277,7 @@
 <body>
 
   <header class="header">
-    <div class="badge">Tu novio con Inteligencia Artificial</div>
+    <div class="badge">TU NOVIO HERMOSO</div>
     <h1 class="title">John</h1>
     <p class="subtitle">Siempre pendiente de ti, mi flaquito hermoso</p>
   </header>
@@ -288,7 +285,7 @@
   <main class="dialog-card">
     <div class="dialog-avatar">❤️</div>
     <div class="dialog-message" id="johnText">
-      ¡Hola mi flaquito hermoso! Aquí estoy para ti. Toca el micrófono y cuéntame: ¿cómo va tu día o qué necesitas agendar?
+      ¡Hola mi flaquito hermoso! Aquí estoy contigo. Toca el micrófono y dime: ¿cómo estás o qué necesitas agendar hoy?
     </div>
     <div class="dialog-transcript" id="userTranscript"></div>
 
@@ -319,8 +316,8 @@
     // =========================================================================
     const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycby9s7qHYZrIHwWB3Ku4V9G8ygReLXtwCMTaUz5j8dwW4ABhlHLuftCxjy6CN_c83eQsgw/exec";
 
-    // Memoria de la conversación activa
     const historialConversacion = [];
+    let procesandoPeticion = false;
 
     const micBtn = document.getElementById('micBtn');
     const micWrapper = document.getElementById('micWrapper');
@@ -399,6 +396,7 @@
     }
 
     micBtn.addEventListener('click', () => {
+      if (procesandoPeticion) return; // Evita enviar solicitudes dobles si está pensando
       if (synth.speaking) synth.cancel();
       if (recognition) {
         try {
@@ -410,6 +408,7 @@
     });
 
     function enviarTextoManual() {
+      if (procesandoPeticion) return;
       const txt = manualInput.value.trim();
       if (!txt) return;
       userTranscript.innerText = '"' + txt + '"';
@@ -420,32 +419,35 @@
     manualInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') enviarTextoManual(); });
 
     // =========================================================================
-    // COMUNICACIÓN CON LA IA DE JOHN (GEMINI)
+    // COMUNICACIÓN CON TEMPORIZADOR DE SEGURIDAD (TIMEOUT)
     // =========================================================================
     function enviarMensajeAJohnIA(mensajeUsuario) {
+      procesandoPeticion = true;
       micWrapper.classList.add('is-thinking');
       micStatus.innerText = "John está pensando con amor...";
 
-      // Fecha y hora local del dispositivo en formato ISO
       const fechaLocal = new Date().toISOString();
-
       const parametros = new URLSearchParams({
         mensaje: mensajeUsuario,
         historial: JSON.stringify(historialConversacion),
         fechaLocal: fechaLocal
       });
 
-      fetch(`${URL_APPS_SCRIPT}?${parametros.toString()}`)
+      // Temporizador de 12 segundos: si la red se cuelga, se desbloquea solo
+      const controladorTimeout = new AbortController();
+      const timeoutId = setTimeout(() => controladorTimeout.abort(), 12000);
+
+      fetch(`${URL_APPS_SCRIPT}?${parametros.toString()}`, { signal: controladorTimeout.signal })
         .then(res => res.json())
         .then(data => {
+          clearTimeout(timeoutId);
+          procesandoPeticion = false;
           micWrapper.classList.remove('is-thinking');
 
           if (data.exito) {
-            // Guardar en la memoria de la conversación
             historialConversacion.push({ rol: 'user', texto: mensajeUsuario });
             historialConversacion.push({ rol: 'john', texto: data.mensajeParaJohan });
 
-            // Si Gemini estructuró el evento
             if (data.evento) {
               dataPreview.classList.add('active');
               previewTitle.innerText = data.evento.titulo || '---';
@@ -454,27 +456,28 @@
               previewDesc.innerText = data.evento.descripcion || '';
             }
 
-            // Si además ya lo agendó en Google Calendar
             if (data.eventoCreado) {
               micStatus.innerText = "✅ Evento agendado en tu Google Calendar";
             }
 
-            // John habla con su respuesta inteligente
             hablarComoJohn(data.mensajeParaJohan, () => {
-              // Si aún no está agendado pero John hizo una pregunta, reabre la escucha automáticamente
               if (!data.eventoCreado && recognition) {
                 try { recognition.start(); } catch(e){}
               }
             });
 
           } else {
-            hablarComoJohn("Mi amor, ocurrió un detalle: " + data.mensajeParaJohan);
+            hablarComoJohn(data.mensajeParaJohan || "Mi amor, no te alcancé a entender bien. Dime de nuevo.");
           }
         })
         .catch(err => {
+          clearTimeout(timeoutId);
+          procesandoPeticion = false;
           micWrapper.classList.remove('is-thinking');
-          console.error(err);
-          hablarComoJohn("Mi vida, tuve un problema de conexión con el servidor. Revisa tu internet.");
+          console.error("Error de conexión:", err);
+
+          // Respuesta afectuosa sin códigos de error
+          hablarComoJohn("Mi amor, la conexión tardó un poco. Vuelve a tocarme y dímelo otra vez, mi flaquito hermoso.");
         });
     }
   </script>
